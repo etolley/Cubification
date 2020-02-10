@@ -116,4 +116,34 @@ public class ClusteringStrategy {
     }
     return color(reds/n, greens/n, blues/n);
   }
+
+  protected float getVarColor(ArrayList<Integer> pix, int avgcolor) {
+    float reds = 0;
+    float greens = 0;
+    float blues = 0;
+    float avgr = red(avgcolor);
+    float avgg = green(avgcolor);
+    float avgb = blue(avgcolor);
+    int n = pix.size();
+    for (int i = 0; i < n; i++) {
+      int p = pix.get(i);
+      float r = red(img.pixels[p]);
+      float g = green(img.pixels[p]);
+      float b = blue(img.pixels[p]);
+      reds += r*r-avgr*avgr;
+      greens += g*g-avgg*avgg;
+      blues += b*b-avgb*avgb;
+    }
+    return sqrt(reds + greens +blues)/n;
+  }
+
+  protected float getTotalVar() {
+    float totalvar = 0;
+    for (int i = 0; i < nclusters; i++) {
+      int avgcolor = getAvgColor(clustered_pixels[i]);
+      float var = getVarColor(clustered_pixels[i], avgcolor);
+      totalvar += var*clustered_pixels[i].size();
+    }
+    return totalvar;
+  }
 }
