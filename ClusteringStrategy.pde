@@ -11,7 +11,6 @@ public class ClusteringStrategy {
     nclusters = n; 
     centroids = new int[nclusters];
     clustered_pixels = new ArrayList[nclusters];
-    initializeCentroids(1);
   }
 
   public void clusterPixels() {
@@ -72,13 +71,12 @@ public class ClusteringStrategy {
     }
   }
 
-
-  protected void initializeCentroids(int seed) {
+  public void initializeCentroids(int seed) {
     randomSeed(seed);
     initializeCentroids();
   }
 
-  protected void initializeCentroids() {
+  public void initializeCentroids() {
     int npixels = width*height;
     for (int i = 0; i < nclusters; i++) {
       centroids[i] = int(random(npixels));

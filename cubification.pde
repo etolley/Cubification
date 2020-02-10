@@ -11,10 +11,10 @@ void setup() {
   //img = loadImage("img_sun.jpg");
   img.resize(width, height);
   img.loadPixels();
-  myClustering = new ClusteringStrategy(6, img);
+  //myClustering = new ClusteringStrategy(6, img);
+  myClustering = new GridClusteringStrategy(4,4, img);
+  myClustering.initializeCentroids(1);
 }
-
-
 
 void draw() {
   image(img, 0, 0, width, height);
