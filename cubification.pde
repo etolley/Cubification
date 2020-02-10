@@ -1,19 +1,22 @@
 PImage img;
-
+int framesSaved;
 
 ClusteringStrategy myClustering;
 void setup() {
   size(640, 640);
-  frameRate(1);
+  frameRate(5);
+  framesSaved = 0;
   // Images must be in the "data" directory to load correctly
   //img = loadImage("square-abstract-color-composition-with-wood-toy-building-blocks-isolated-H8CGH9.jpg");
-  //img = loadImage("img_pagoda.jpg");
-  img = loadImage("img_sun.jpg");
+  img = loadImage("city.png");
+  //img = loadImage("img_sun.jpg");
+  //img = loadImage("mona.png");
   img.resize(width, height);
   img.loadPixels();
   //myClustering = new ClusteringStrategy(6, img);
-  myClustering = new GridClusteringStrategy(3,3, img);
+  myClustering = new GridClusteringStrategy(30,30, img);
   myClustering.initializeCentroids(1);
+ 
 }
 
 void draw() {
@@ -26,5 +29,9 @@ void draw() {
   // show current colors
   myClustering.updateScreenColors();
 
-  myClustering.updateCentroids();
+  boolean updated = myClustering.updateCentroids();
+  if(updated && framesSaved < 30){
+    saveFrame("pago-####.png");
+    framesSaved++;
+  }
 }

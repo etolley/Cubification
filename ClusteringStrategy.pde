@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class ClusteringStrategy {
   int nclusters;
   int centroids[] ;
+  int avg_colors[];
   ArrayList<Integer>[] clustered_pixels;
   PImage data_img;
 
@@ -10,6 +11,7 @@ public class ClusteringStrategy {
     data_img = in_img;
     nclusters = n; 
     centroids = new int[nclusters];
+    avg_colors = new int[nclusters];
     clustered_pixels = new ArrayList[nclusters];
   }
 
@@ -50,7 +52,7 @@ public class ClusteringStrategy {
     updatePixels();
   }
 
-  public void updateCentroids() {
+  public boolean updateCentroids() {
     for (int i = 0; i < nclusters; i++) {
       int n = clustered_pixels[i].size();
       float avg_w = 0;
@@ -69,6 +71,8 @@ public class ClusteringStrategy {
       centroids[i] = new_loc;
       clustered_pixels[i].clear();
     }
+    
+    return true;
   }
 
   public void initializeCentroids(int seed) {
@@ -101,6 +105,12 @@ public class ClusteringStrategy {
     float dg = green(c1) - green(c2);
     float db = blue(c1) - blue(c2);
     return sqrt(dr*dr + dg*dg + db*db);
+  }
+
+  protected void loadAvgColors(){
+    for (int i = 0; i < nclusters; i++) {
+      avg_colors[i] = getAvgColor(clustered_pixels[i]);
+    }
   }
 
   protected int getAvgColor(ArrayList<Integer> pix) {
